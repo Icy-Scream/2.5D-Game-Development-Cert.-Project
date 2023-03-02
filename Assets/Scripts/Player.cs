@@ -7,11 +7,13 @@ public class Player : MonoBehaviour
     private CharacterController _controller;
     [SerializeField] private float _speed = 2.0f;
     [SerializeField] private float _jumpStrength = 15.0f;
-    [SerializeField] private float _gravity = 1.0f;
+    [SerializeField] private float _gravity;
     [SerializeField] private bool _groundPlayer;
     private float _yVelocity;
+    private bool _flipAxis;
     public bool Is_Running { get; private set;}
-
+    public bool Is_Jumping { get; private set; }
+    public bool Is_Hanging { get; set; }
 
     private void Awake()
     {
@@ -23,6 +25,8 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+
+        if(!Is_Hanging)
         Movement();
     }
 
@@ -31,7 +35,7 @@ public class Player : MonoBehaviour
     {
 
         _groundPlayer = _controller.isGrounded;
-
+        Is_Jumping = _gameInput.IsJumping();
 
         if (_groundPlayer == true)
         {
@@ -51,11 +55,28 @@ public class Player : MonoBehaviour
 
         Vector3 _direction = _gameInput.GetMovementVectorNoramlized();
         Vector3 _xVelocity = _direction * _speed;
+        
+        if(_direction.x == -1 && !_flipAxis) 
+        {
+            _flipAxis = true;
+            transform.Rotate(Vector3.up, 180);
+        }
+        else if (_direction.x == 1 && _flipAxis) 
+        {
+            _flipAxis = false;
+            transform.Rotate(Vector3.up, 180);
+        }
 
         Vector3 _movement = new Vector3(_xVelocity.x, _yMaxVelocity, 0);
         Is_Running = _direction != Vector3.zero;
         _controller.Move(_movement * Time.deltaTime);
 
+    }
+
+    public void FreezePlayer(float gravityValue)
+    {
+        _gravity = gravityValue;
+        _yVelocity = 0;
     }
 
 }
