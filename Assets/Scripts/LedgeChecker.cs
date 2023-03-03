@@ -5,6 +5,14 @@ using UnityEngine;
 public class LedgeChecker : MonoBehaviour
 {
     private Player _player;
+    [SerializeField] float _snapPositionX,_snapPositionY,_snapPositionZ;
+    private Vector3 _snapPosition;
+
+    private void Start()
+    {
+        _snapPosition = new Vector3(_snapPositionX, _snapPositionY, _snapPositionZ);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.CompareTag("LedgeChecker")) 
@@ -14,7 +22,8 @@ public class LedgeChecker : MonoBehaviour
             if(_player != null) 
             {
                 Debug.Log("LEDGE");
-                _player.FreezePlayer(0f);
+                _player.transform.position = _snapPosition;
+                _player.FreezePlayer();
                 _player.Is_Hanging = true;
             }
         }
@@ -29,7 +38,7 @@ public class LedgeChecker : MonoBehaviour
             if (_player != null)
             {
                 Debug.Log("LEDGE");
-                _player.FreezePlayer(9.8f);
+                _player.FreezePlayer();
                 _player.Is_Hanging = false;
             }
         }

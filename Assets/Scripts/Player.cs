@@ -73,10 +73,9 @@ public class Player : MonoBehaviour
 
     }
 
-    public void FreezePlayer(float gravityValue)
+    public void FreezePlayer()
     {
-        _gravity = gravityValue;
-        _yVelocity = 0;
+        _controller.enabled = false;
     }
 
 }
