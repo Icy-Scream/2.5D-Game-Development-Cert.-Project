@@ -1,4 +1,4 @@
-
+using UnityEditorInternal;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -9,7 +9,12 @@ public class Player : MonoBehaviour
     [SerializeField] private float _jumpStrength = 15.0f;
     [SerializeField] private float _gravity;
     [SerializeField] private bool _groundPlayer;
+
+    private Vector3 _standingUp;
+    
     private float _yVelocity;
+    public float XVelocity { get; private set; }
+
     private bool _flipAxis;
     public bool Is_Running { get; private set;}
     public bool Is_Jumping { get; private set; }
@@ -23,9 +28,10 @@ public class Player : MonoBehaviour
         if (_controller == null) Debug.LogError("Missing Character Controller");
     }
 
+
     private void Update()
     {
-
+        
         if(!Is_Hanging)
         Movement();
     }
@@ -68,14 +74,27 @@ public class Player : MonoBehaviour
         }
 
         Vector3 _movement = new Vector3(_xVelocity.x, _yMaxVelocity, 0);
+        XVelocity = _direction.x;
         Is_Running = _direction != Vector3.zero;
         _controller.Move(_movement * Time.deltaTime);
 
     }
 
-    public void FreezePlayer()
+    public void GrabLedge(Vector3 snapPosition)
     {
+        transform.position = snapPosition;
+        Is_Hanging = true;
+        XVelocity = 0;
+        Is_Jumping = false;
         _controller.enabled = false;
     }
 
+    public void SetStandingUpPosition(Vector3 snapPosition) => _standingUp = snapPosition;
+
+    public void StandingUp() { 
+    
+        transform.position = _standingUp;
+        Is_Hanging = false;
+        _controller.enabled = true;
+    }
 }

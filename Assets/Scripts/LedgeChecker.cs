@@ -7,6 +7,7 @@ public class LedgeChecker : MonoBehaviour
     private Player _player;
     [SerializeField] float _snapPositionX,_snapPositionY,_snapPositionZ;
     private Vector3 _snapPosition;
+    [SerializeField] private Vector3 _standPosition;
 
     private void Start()
     {
@@ -17,29 +18,11 @@ public class LedgeChecker : MonoBehaviour
     {
         if (other.transform.CompareTag("LedgeChecker")) 
         {
-            Debug.Log("Check1");
             _player = FindObjectOfType<Player>();
             if(_player != null) 
             {
-                Debug.Log("LEDGE");
-                _player.transform.position = _snapPosition;
-                _player.FreezePlayer();
-                _player.Is_Hanging = true;
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.transform.CompareTag("LedgeChecker"))
-        {
-            Debug.Log("Check1");
-            _player = FindObjectOfType<Player>();
-            if (_player != null)
-            {
-                Debug.Log("LEDGE");
-                _player.FreezePlayer();
-                _player.Is_Hanging = false;
+                _player.GrabLedge(_snapPosition);
+                _player.SetStandingUpPosition(_standPosition);
             }
         }
     }
