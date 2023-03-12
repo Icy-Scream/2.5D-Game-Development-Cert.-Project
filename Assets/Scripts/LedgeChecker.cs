@@ -15,7 +15,7 @@ public class LedgeChecker : MonoBehaviour
         _snapPosition = new Vector3(_snapPositionX, _snapPositionY, _snapPositionZ);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.transform.CompareTag("LedgeChecker")) 
         {
@@ -23,7 +23,7 @@ public class LedgeChecker : MonoBehaviour
             if(_player != null) 
             {
                 _gameInput = _player.GetComponent<GameInput>();
-                if (_gameInput.GrabLedge())
+                if (_gameInput.GrabInteraction())
                 {
                     _player.GrabLedge(_snapPosition);
                     _player.SetStandingUpPosition(_standPosition);

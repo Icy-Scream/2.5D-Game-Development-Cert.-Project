@@ -20,7 +20,7 @@ public class GameInput : MonoBehaviour
 
     private void Interaction_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        OnInteract?.Invoke(this,EventArgs.Empty);
+        OnInteract?.Invoke(this, EventArgs.Empty);
     }
 
     public bool IsRolling()
@@ -28,7 +28,7 @@ public class GameInput : MonoBehaviour
         return _gameInput.Player.Roll.IsInProgress();
     }
 
-    public bool GrabLedge()
+    public bool GrabInteraction()
     {
         return _gameInput.Player.Interaction.IsPressed();
     }
